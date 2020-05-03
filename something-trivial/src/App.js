@@ -1,19 +1,26 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import questions from './data/questions'; import './App.css';
+import React, { Component } from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import TrivialNavBar from './components/navbar';
+import TrivialFooter from './components/footer';
+import TrivialController from './components/controller';
 
 class App extends Component {
+  componentDidMount() {
+    sessionStorage.setItem('questions', JSON.stringify(questions));
+  }
+
   render() {
+
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
+        <div className="App">
+          <TrivialNavBar />
+          <TrivialController />
+          <TrivialFooter />
         </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
+      </BrowserRouter>
     );
   }
 }
