@@ -21,7 +21,6 @@ class TrivialController extends Component {
       marginTop: "-25px",
       padding: "50px 0 0 0",
       boxSizing: "border-box"
-
     }
 
     return (
