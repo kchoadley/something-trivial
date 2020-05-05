@@ -1,8 +1,12 @@
 // Defines redux actions
-export const GET_QUESTION = 'GET_QUESTION';
+export const GET_QUESTIONS = 'GET_QUESTIONS';
 export const CREATE_QUESTION = 'CREATE_QUESTION';
 export const UPDATE_QUESTION = 'UPDATE_QUESTION';
 export const REMOVE_QUESTION = 'REMOVE_QUESTION';
 
-export const GET_QUESTIONS = 'GET_QUESTIONS';
-export const GET_QUESTION_IDS = 'GET_QUESTION_IDS';
+export default {
+  GET_QUESTIONS,
+  CREATE_QUESTION,
+  UPDATE_QUESTION,
+  REMOVE_QUESTION
+}
