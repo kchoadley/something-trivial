@@ -5,13 +5,14 @@ import {
   UPDATE_QUESTION,
   REMOVE_QUESTION
 } from "../actions/types";
-import { State, Question } from '../data/types';
+import { IState, IQuestion, INewQuestion } from '../data/types';
+import Question from '../data/classes';
 
-const initialState: State = {
+const initialState: IState = {
   questions: questions
 };
 
-function rootReducer(state = initialState, action: any): State {
+function rootReducer(state = initialState, action: any): IState {
   switch (action.type) {
     case CREATE_QUESTION:
       return add(state, action.question)
@@ -26,26 +27,27 @@ function rootReducer(state = initialState, action: any): State {
   }
 };
 
-const remove = (state: State, id: number): State => (
+const remove = (state: IState, id: number): IState => (
   Object.assign({},
     state,
     { questions: state.questions.filter(question => question.id !== id) }
   )
 );
 
-const add = (state: State, question: Question): State => {
-  question.id = nextIndex(state);
+const add = (state: IState, newQuestion: INewQuestion): IState => {
+  let question = new Question(newQuestion, generateId(state));
+  
   return Object.assign({},
     state,
     { questions: state.questions.concat(question) }
   )
 };
 
-const update = (state: State, question: Question): State => (
+const update = (state: IState, question: IQuestion): IState => (
   add(remove(state, question.id), question)
 );
 
-const nextIndex = (state: State): number => {
+const generateId = (state: IState): number => {
   let i = 1;
   state.questions.forEach(question => {
     i = i > question.id ? i : question.id;

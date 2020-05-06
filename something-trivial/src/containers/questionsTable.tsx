@@ -1,12 +1,12 @@
 import React from 'react';
 import { Button, Table } from 'reactstrap';
 import { connect } from 'react-redux';
-import { Question, State } from '../data/types';
+import { IQuestion, IState } from '../data/types';
 import { removeQuestion } from '../actions/questionActions';
 
 // Define the properties type needed by the React Component
 type Props = {
-  questions: Question[];
+  questions:  IQuestion[];
   round: number;
   deleteOnClick: (id: number) => void;
 };
@@ -51,7 +51,7 @@ const QuestionsTable: React.FC<Props> = (props) => {
 
 
 // Construct state values to be used in the component
-const mapStateToProps = (state: State) => ({
+const mapStateToProps = (state: IState) => ({
   questions: state.questions,
   round: 1
 });

@@ -5,17 +5,17 @@ import {
   UPDATE_QUESTION,
   REMOVE_QUESTION,
 } from "./types";
-import { Question } from "../data/types";
+import { IQuestion, INewQuestion } from "../data/types";
 
 export function getQuestions() {
   return { type: GET_QUESTIONS }
 };
 
-export function createQuestion(question: Question) {
+export function createQuestion(question: INewQuestion) {
   return { type: CREATE_QUESTION, question }
 };
 
-export function updateQuestion(question: Question) {
+export function updateQuestion(question: IQuestion) {
   return { type: UPDATE_QUESTION, question }
 };
 
