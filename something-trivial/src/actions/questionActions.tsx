@@ -4,6 +4,7 @@ import {
   CREATE_QUESTION,
   UPDATE_QUESTION,
   REMOVE_QUESTION,
+  REMOVE_ALL_QUESTIONS,
 } from "./types";
 import { IQuestion, INewQuestion } from "../data/types";
 
@@ -23,9 +24,14 @@ export function removeQuestion(id: number) {
   return { type: REMOVE_QUESTION, id }
 };
 
+export function removeAllQuestions() {
+  return { type: REMOVE_ALL_QUESTIONS }
+};
+
 export default {
   getQuestions,
   createQuestion,
   updateQuestion,
-  removeQuestion
+  removeQuestion,
+  REMOVE_ALL_QUESTIONS
 }
