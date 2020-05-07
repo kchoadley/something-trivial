@@ -20,10 +20,22 @@ type Props = {
 const NewQuestionForm: React.FC<Props> = (props) => {
   const { onClick } = props;
 
-  // hoist input values
-  const [prompt, setPromptValue] = useState<string>("");
-  const [number, setNumberValue] = useState<string>("4");
-  const [answers, setAnswerValue] = useState<string[]>([""]);
+  // default form values
+  const defaultPrompt = "";
+  const defaultRound = "1";
+  const defaultNumber = "1";
+  const defaultAnswers = ["", ""];
+
+  // connect input values
+  const [prompt, setPromptValue] = useState<string>(defaultPrompt);
+  const [round, setRoundValue] = useState<string>(defaultRound);
+  const [number, setNumberValue] = useState<string>(defaultNumber);
+  const [answers, setAnswerValue] = useState<string[]>(defaultAnswers);
+
+  // handle changes
+  const handleRoundChange = () => (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRoundValue(e.target.value);
+  };
 
   const handleNumberChange = () => (e: React.ChangeEvent<HTMLInputElement>) => {
     setNumberValue(e.target.value);
@@ -38,16 +50,45 @@ const NewQuestionForm: React.FC<Props> = (props) => {
     setAnswerValue(newAnswers);
   };
 
+  const resetFields = () => {
+    setPromptValue(defaultPrompt);
+    setRoundValue(defaultRound);
+    setNumberValue(defaultNumber);
+    setAnswerValue(defaultAnswers);
+  }
 
+  // on submit, create
   const Create = () => (e: React.FormEvent) => {
-    // data validation
+    // prevent page refresh
+    e.preventDefault();
 
-    let question = { round: 1, number: parseInt(number), prompt: prompt, answerContains: answers }
+    // TODO: data verification
+
+    // data sanitization
+    let parsedAnswers: string[] = [];
+    answers.forEach(answer => { if (answer.trim().length > 0) parsedAnswers.push(answer.trim()) })
+
+    let question = { round: parseInt(round), number: parseInt(number), prompt: prompt, answerContains: parsedAnswers }
     onClick(question);
+    resetFields();
   }
 
   return (
-    <Form>
+    <Form onSubmit={Create()}>
+      <FormGroup row>
+        <Col sm={4} md={3} lg={2}>
+          <Label for="round">Round Number</Label>
+        </Col>
+        <Col sm={4} md={3} lg={2}>
+          <Input type="select" name="round" id="round" value={round} onChange={handleRoundChange()}>
+            <option value='1'>1</option>
+            <option value='2'>2</option>
+            <option value='3'>3</option>
+            <option value='4'>4</option>
+            <option value='5'>5</option>
+          </Input>
+        </Col>
+      </FormGroup>
       <FormGroup row>
         <Col sm={4} md={3} lg={2}>
           <Label for="questionNumber">Question Number</Label>
@@ -67,19 +108,31 @@ const NewQuestionForm: React.FC<Props> = (props) => {
           </Input>
         </Col>
       </FormGroup>
-      <FormGroup>
-        <Label for="prompt">Question Prompt</Label>
-        <Input type="text" name="prompt" id="prompt" placeholder="Question..." value={prompt} onChange={handlePromptChange()} />
+      <FormGroup row>
+        <Col sm={4} md={3} lg={2}>
+          <Label for="prompt">Question Prompt</Label>
+        </Col>
+        <Col sm={8} md={9} lg={10} >
+          <Input type="textarea" name="prompt" id="prompt" placeholder="Question..." value={prompt} onChange={handlePromptChange()} required />
+        </Col>
       </FormGroup>
-      <FormGroup>
-        <Label for="answer0">Answer should contain...</Label>
-        <Input type="text" name="answer0" id="answer0" placeholder="Answer..." value={answers[0]} onChange={handleAnswersChange(0)} />
+      <FormGroup row>
+        <Col sm={4} md={3} lg={2}>
+          <Label for="answer0">Answer Contains</Label>
+        </Col>
+        <Col sm={8} md={9} lg={10} >
+          <Input type="text" name="answer0" id="answer0" placeholder="Answer..." value={answers[0]} onChange={handleAnswersChange(0)} required />
+        </Col>
       </FormGroup>
-      <FormGroup>
-        <Label for="answer1">Answer should contain...</Label>
-        <Input type="text" name="answer1" id="answer1" placeholder="Answer..." value={answers[1]} onChange={handleAnswersChange(1)} />
+      <FormGroup row>
+        <Col sm={4} md={3} lg={2}>
+          <Label for="answer1">Answer Contains</Label>
+        </Col>
+        <Col sm={8} md={9} lg={10} >
+          <Input type="text" name="answer0" id="answer0" placeholder="Answer..." value={answers[0]} onChange={handleAnswersChange(0)} required />
+        </Col>
       </FormGroup>
-      <Button onClick={Create()}>Create</Button>
+      <Button type="submit">Create</Button>
     </Form>
   );
 };
