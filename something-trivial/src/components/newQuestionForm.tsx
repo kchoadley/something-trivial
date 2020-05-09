@@ -84,7 +84,6 @@ const NewQuestionForm: React.FC<Props> = (props) => {
 
   }
   return (
-    
     <Form onSubmit={Create()}>
       <FormGroup row>
         <Col sm={4} md={3} lg={2}>

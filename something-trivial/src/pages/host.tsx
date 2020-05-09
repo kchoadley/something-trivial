@@ -1,5 +1,6 @@
 import React from 'react';
 import QuestionsTable from '../components/questionsTable';
+import RoundsButtons from '../components/roundButtons'
 import { Link } from 'react-router-dom';
 import { Button, Row, Col, Container } from 'reactstrap';
 
@@ -7,6 +8,7 @@ class HostPage extends React.Component {
   render() {
     return (
       <Container>
+        <RoundsButtons></RoundsButtons>
         <Row>
           <Col sm='9'>
             <h2> Questions </h2>
