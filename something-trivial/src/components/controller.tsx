@@ -11,6 +11,8 @@ import {
 import HomePage from '../pages/home';
 import NotFoundPage from '../pages/notfound';
 import HostPage from '../pages/host';
+import NewQuestionForm from './newQuestionForm';
+import RoundView from '../pages/round';
 
 class TrivialController extends Component {
   render() {
@@ -19,8 +21,7 @@ class TrivialController extends Component {
       heightMin: '100px',
       display: "table",
       marginTop: "-25px",
-      padding: "50px 0 0 0",
-      boxSizing: "border-box"
+      padding: "50px 0 0 0"
     }
 
     return (
@@ -35,6 +36,18 @@ class TrivialController extends Component {
               <Route
                 exact path='/host'
                 render={(props) => <HostPage {...props} />}
+              />
+              <Route
+                exact path='/questions/new'
+                render={(props) => <NewQuestionForm {...props} />}
+              />
+              <Route
+                exact path='/questions/:id'
+                render={(props) => <NewQuestionForm {...props} />}
+              />
+              <Route
+                exact path='/round/:round'
+                render={(props) => <RoundView {...props} />}
               />
               <Route component={NotFoundPage} />
             </Switch>

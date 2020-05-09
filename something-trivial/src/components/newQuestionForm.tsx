@@ -10,6 +10,7 @@ import {
 import { connect } from 'react-redux';
 import { IState, INewQuestion } from '../data/types';
 import { createQuestion } from '../actions/questionActions';
+import { Redirect } from 'react-router-dom';
 
 // Define the properties type needed by the React Component
 type Props = {
@@ -27,6 +28,7 @@ const NewQuestionForm: React.FC<Props> = (props) => {
   const defaultAnswers = ["", ""];
 
   // connect input values
+  const [redirect, setRedirectValue] = useState<string>('');
   const [prompt, setPromptValue] = useState<string>(defaultPrompt);
   const [round, setRoundValue] = useState<string>(defaultRound);
   const [number, setNumberValue] = useState<string>(defaultNumber);
@@ -71,9 +73,18 @@ const NewQuestionForm: React.FC<Props> = (props) => {
     let question = { round: parseInt(round), number: parseInt(number), prompt: prompt, answerContains: parsedAnswers }
     onClick(question);
     resetFields();
+    setRedirectValue('/host');
+    
   }
 
+  if (redirect.length > 0) {
+    return <Redirect push to={redirect} />
+  }
+  else {
+
+  }
   return (
+    
     <Form onSubmit={Create()}>
       <FormGroup row>
         <Col sm={4} md={3} lg={2}>
