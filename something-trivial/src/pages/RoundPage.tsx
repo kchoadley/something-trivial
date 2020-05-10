@@ -1,13 +1,17 @@
 import React from 'react';
-import { Table } from 'reactstrap';
+import { Table, Form, FormGroup, Label, Input, FormText, Row, Col } from 'reactstrap';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import NotFoundPage from './NotFoundPage';
-import { IQuestion, IState, IAnswer } from '../redux/data/types';
+import { IQuestion, IState, IAnswer, INewAnswer } from '../redux/data/types';
+import { createAnswer } from '../redux/actions/answerActions';
+import AnswerRow from '../components/AnswerRow';
+import answersLoader from '../services/answersLoader';
 
 type Props = {
   questions: IQuestion[];
   answers: IAnswer[];
+  createAnswer: (answer: INewAnswer) => void;
 };
 
 interface RouteParams {
@@ -16,12 +20,16 @@ interface RouteParams {
 
 const RoundPage: React.FC<Props> = (props) => {
   const round = parseInt(useParams<RouteParams>().round, 10);
-  console.log(round);
   const questions = props.questions.filter(question => question.round === round)
     .sort((a, b) => (a.number - b.number));
   const answers = props.answers.filter(answer => answer.round === round)
     .sort((a, b) => (a.number - b.number));
-  const teamNames = [...(new Set(answers.map(answer => answer.teamName)))].sort();
+  const createAnswer = props.createAnswer;
+  const roundQuestions = questions.filter(question => question.round === round)
+    .sort((a, b) => (a.number - b.number));
+  const teamNames = [...(new Set(answers.map(answer => answer.teamName)))]
+    .sort();
+  const loadAnswersFile = answersLoader(round, createAnswer);
 
   if (questions.length === 0) {
     return (
@@ -30,36 +38,43 @@ const RoundPage: React.FC<Props> = (props) => {
   }
 
   return (
-    <Table striped>
-      <thead color='red'>
-        <tr>
-          <th>Answers</th>
-          {
-            questions.filter(question => question.round === round)
-              .sort((a, b) => (a.number - b.number))
-              .map(question => (
-                <th> {question.answerContains.join(', ')} </th>
+    <React.Fragment>
+      <Table striped dark>
+        <thead color='red'>
+          <tr>
+            <th>Answers</th>
+            {
+              roundQuestions.map(question => (
+                <th key={question.id}> {question.answerContains.join(', ')} </th>
               ))
+            }
+          </tr>
+        </thead>
+        <tbody>
+          {
+            teamNames.map(name => (
+              <AnswerRow key={name} answers={answers.filter(answer => answer.teamName === name)} questions={roundQuestions} />
+            ))
           }
-        </tr>
-      </thead>
-      <tbody>
-        {
-          teamNames.map(name => (
-            < tr key={name}>
-              <td>{name}</td>
-              {
-                answers.filter(answer => answer.teamName === name)
-                  .sort((a, b) => (a.number - b.number))
-                  .map(answer => (
-                    <td> {answer.answer} </td>
-                  ))
-              }
-            </tr>
-          ))
-        }
-      </tbody>
-    </Table >
+        </tbody>
+      </Table >
+
+      <Form>
+        <FormGroup>
+          <Row>
+            <Col>
+              <Label for="csvAnswersFile">CSV Answers File Loader</Label>
+              <FormText color="muted">
+                Select a CSV file of answers for this round to be loaded.
+              </FormText>
+            </Col>
+            <Col>
+              <Input type="file" name="csvAnswersFile" id="csvAnswersFile" accept='.csv' onChange={loadAnswersFile} />
+            </Col>
+          </Row>
+        </FormGroup>
+      </Form>
+    </React.Fragment>
   );
 };
 
@@ -68,4 +83,4 @@ const mapStateToProps = (state: IState) => ({
   answers: state.answers
 });
 
-export default connect(mapStateToProps)(RoundPage);
+export default connect(mapStateToProps, { createAnswer })(RoundPage);
