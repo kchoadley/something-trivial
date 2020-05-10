@@ -1,4 +1,3 @@
-import './App.css';
 import React, { Component } from 'react';
 import TrivialNavBar from './components/TrivialNavBar';
 import TrivialFooter from './components/TrivialFooter';
