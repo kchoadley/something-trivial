@@ -8,18 +8,19 @@ import {
   Col,
 } from 'reactstrap';
 import { connect } from 'react-redux';
-import { IState, INewQuestion } from '../data/types';
-import { createQuestion } from '../actions/questionActions';
+import { IState, INewQuestion } from '../redux/data/types';
+import { createQuestion } from '../redux/actions/questionActions';
 import { Redirect } from 'react-router-dom';
+import { HOST_PAGE } from './TrivialController';
 
 // Define the properties type needed by the React Component
 type Props = {
-  onClick: (question: INewQuestion) => void;
+  createQuestion: (question: INewQuestion) => void;
 };
 
 // React component
 const NewQuestionForm: React.FC<Props> = (props) => {
-  const { onClick } = props;
+  const { createQuestion } = props;
 
   // default form values
   const defaultPrompt = "";
@@ -48,7 +49,7 @@ const NewQuestionForm: React.FC<Props> = (props) => {
   };
 
   const handleAnswersChange = (index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    let newAnswers = [...answers.slice(0, index), e.target.value, ...answers.slice(index + 1)];
+    const newAnswers = [...answers.slice(0, index), e.target.value, ...answers.slice(index + 1)];
     setAnswerValue(newAnswers);
   };
 
@@ -71,10 +72,16 @@ const NewQuestionForm: React.FC<Props> = (props) => {
     answers.forEach(answer => { if (answer.trim().length > 0) parsedAnswers.push(answer.trim()) })
 
     let question = { round: parseInt(round), number: parseInt(number), prompt: prompt, answerContains: parsedAnswers }
-    onClick(question);
+    createQuestion(question);
     resetFields();
-    setRedirectValue('/host');
+    setRedirectValue(HOST_PAGE);
     
+  }
+
+  const AddAnswerClick = () => (e: React.MouseEvent) => {
+    e.preventDefault();
+    const newAnswers = [...answers, ''];
+    setAnswerValue(newAnswers)
   }
 
   if (redirect.length > 0) {
@@ -139,9 +146,23 @@ const NewQuestionForm: React.FC<Props> = (props) => {
           <Label for="answer1">Answer Contains</Label>
         </Col>
         <Col sm={8} md={9} lg={10} >
-          <Input type="text" name="answer0" id="answer0" placeholder="Answer..." value={answers[0]} onChange={handleAnswersChange(0)} required />
+          <Input type="text" name="answer0" id="answer1" placeholder="Answer..." value={answers[1]} onChange={handleAnswersChange(1)} />
         </Col>
       </FormGroup>
+      {
+        (answers.length > 2) ? (
+            <FormGroup row>
+              <Col sm={4} md={3} lg={2}>
+                <Label for="answer1">Answer Contains</Label>
+              </Col>
+              <Col sm={8} md={9} lg={10} >
+                <Input type="text" name="answer2" id="answer2" placeholder="Answer..." value={answers[2]} onChange={handleAnswersChange(2)} />
+              </Col>
+            </FormGroup>
+          ) : <React.Fragment />
+      }
+      <Button type='button' onClick={AddAnswerClick()}>(+) Answer</Button>
+      <br/>
       <Button type="submit">Create</Button>
     </Form>
   );
@@ -151,8 +172,4 @@ const mapStateToProps = (state: IState) => ({
   questions: state.questions
 });
 
-const dispatchProps = {
-  onClick: createQuestion
-}
-
-export default connect(mapStateToProps, dispatchProps)(NewQuestionForm);
+export default connect(mapStateToProps, { createQuestion })(NewQuestionForm);

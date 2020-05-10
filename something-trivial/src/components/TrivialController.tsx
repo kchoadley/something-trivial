@@ -8,11 +8,12 @@ import {
   Col,
   Row
 } from 'reactstrap';
-import HomePage from '../pages/home';
-import NotFoundPage from '../pages/notfound';
-import HostPage from '../pages/host';
-import NewQuestionForm from './newQuestionForm';
-import RoundView from '../pages/round';
+import HomePage from '../pages/HomePage';
+import NotFoundPage from '../pages/NotFoundPage';
+import HostPage from '../pages/HostPage';
+import NewQuestionForm from './NewQuestionForm';
+import RoundPage from '../pages/RoundPage';
+import QuestionPage from '../pages/QuestionPage';
 
 class TrivialController extends Component {
   render() {
@@ -30,24 +31,24 @@ class TrivialController extends Component {
           <Col style={{ textAlign: 'left' }}>
             <Switch>
               <Route
-                exact path='/'
+                exact path={ROOT_PATH}
                 render={(props) => <HomePage {...props} />}
               />
               <Route
-                exact path='/host'
+                exact path={HOST_PAGE}
                 render={(props) => <HostPage {...props} />}
               />
               <Route
-                exact path='/questions/new'
+                exact path={NEW_QUESTION_PAGE}
                 render={(props) => <NewQuestionForm {...props} />}
               />
               <Route
-                exact path='/questions/:id'
-                render={(props) => <NewQuestionForm {...props} />}
+                exact path={VIEW_QUESTION_PAGE(':id')}
+                render={(props) => <QuestionPage {...props} />}
               />
               <Route
-                exact path='/round/:round'
-                render={(props) => <RoundView {...props} />}
+                exact path={VIEW_ROUND_PAGE(':round')}
+                render={(props) => <RoundPage {...props} />}
               />
               <Route component={NotFoundPage} />
             </Switch>
@@ -57,5 +58,16 @@ class TrivialController extends Component {
     );
   }
 }
+
+const ROOT_PATH = '/';
+const HOST_PATH = ROOT_PATH + 'host/';
+const QUESTION_PATH = ROOT_PATH + 'questions/';
+const ROUND_PATH = ROOT_PATH + 'rounds/';
+
+export const HOME_PAGE = ROOT_PATH;
+export const HOST_PAGE = HOST_PATH;
+export const VIEW_QUESTION_PAGE = (id: string) => `${QUESTION_PATH}${id}/`;
+export const NEW_QUESTION_PAGE = `${QUESTION_PATH}new/`;
+export const VIEW_ROUND_PAGE = (id: string) => `${ROUND_PATH}${id}/`;
 
 export default TrivialController;

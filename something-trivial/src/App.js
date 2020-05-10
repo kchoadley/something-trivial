@@ -1,26 +1,17 @@
 import './App.css';
-import questions from './data/questions'; import './App.css';
 import React, { Component } from 'react';
-import { BrowserRouter } from 'react-router-dom';
-import TrivialNavBar from './components/navbar';
-import TrivialFooter from './components/footer';
-import TrivialController from './components/controller';
+import TrivialNavBar from './components/TrivialNavBar';
+import TrivialFooter from './components/TrivialFooter';
+import TrivialController from './components/TrivialController';
 
 class App extends Component {
-  componentDidMount() {
-    sessionStorage.setItem('questions', JSON.stringify(questions));
-  }
-
   render() {
-
     return (
-      <BrowserRouter basename={process.env.PUBLIC_URL}>
         <div className="App">
           <TrivialNavBar />
           <TrivialController />
           <TrivialFooter />
         </div>
-      </BrowserRouter>
     );
   }
 }
