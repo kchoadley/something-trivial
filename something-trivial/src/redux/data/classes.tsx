@@ -7,6 +7,7 @@ export class Question implements IQuestion{
     this.number = question.number;
     this.prompt = question.prompt;
     this.answerContains = question.answerContains;
+    this.points = question.points;
     this.id = id;
   }
 
@@ -15,6 +16,7 @@ export class Question implements IQuestion{
   round: number;
   number: number;
   prompt: string;
+  points: number;
   answerContains: string[];
 }
 

@@ -8,6 +8,7 @@ interface INewQuestion {
   readonly number: number;
   readonly prompt: string;
   readonly answerContains: Array<string>;
+  readonly points: number;
 }
 
 interface IAnswer extends INewAnswer{
