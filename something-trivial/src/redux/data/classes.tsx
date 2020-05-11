@@ -2,6 +2,7 @@ import { IQuestion, INewQuestion, IAnswer, INewAnswer } from "./types";
 
 export class Question implements IQuestion{
   constructor(question: INewQuestion, id: number) {
+    this.gameId = question.gameId;
     this.round = question.round;
     this.number = question.number;
     this.prompt = question.prompt;
@@ -9,6 +10,7 @@ export class Question implements IQuestion{
     this.id = id;
   }
 
+  gameId: number;
   id: number;
   round: number;
   number: number;
@@ -18,6 +20,7 @@ export class Question implements IQuestion{
 
 export class Answer implements IAnswer{
   constructor(answer: INewAnswer, id: number) {
+    this.gameId = answer.gameId;
     this.id = id;
     this.round = answer.round;
     this.number = answer.number;
@@ -25,6 +28,7 @@ export class Answer implements IAnswer{
     this.teamName = answer.teamName;
   }
 
+  gameId: number;
   id: number;
   round: number;
   number: number;

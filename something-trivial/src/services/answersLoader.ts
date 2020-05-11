@@ -29,6 +29,7 @@ const answersLoader = (round: number, createAnswer: (answer: INewAnswer) => void
     let name = record[0];
     for (let i = 1; i < record.length; i++) {
       let answer: INewAnswer = {
+        gameId: 0,
         round: round,
         number: i,
         teamName: name,

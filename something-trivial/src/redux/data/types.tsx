@@ -1,27 +1,22 @@
-interface IQuestion {
+interface IQuestion extends INewQuestion {
   readonly id: number;
-  readonly round: number;
-  readonly number: number;
-  readonly prompt: string;
-  readonly answerContains: Array<string>;
 }
 
 interface INewQuestion {
+  readonly gameId: number;
   readonly round: number;
   readonly number: number;
   readonly prompt: string;
   readonly answerContains: Array<string>;
 }
 
-interface IAnswer {
+interface IAnswer extends INewAnswer{
   readonly id: number;
-  readonly round: number;
-  readonly number: number;
-  readonly answer: string;
-  readonly teamName: string;
+  isCorrect?: boolean
 }
 
 interface INewAnswer {
+  readonly gameId: number;
   readonly round: number;
   readonly number: number;
   readonly answer: string;

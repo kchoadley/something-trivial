@@ -1,5 +1,6 @@
 export default [
   {
+    gameId: 0,
     id: 0,
     round: 1,
     number: 1,
@@ -7,6 +8,7 @@ export default [
     teamName: `Erin & Emma`,
   },
   {
+    gameId: 0,
     id: 1,
     round: 1,
     number: 2,
@@ -14,6 +16,7 @@ export default [
     teamName: `Erin & Emma`,
   },
   {
+    gameId: 0,
     id: 2,
     round: 1,
     number: 3,
@@ -21,6 +24,7 @@ export default [
     teamName: `Erin & Emma`,
   },
   {
+    gameId: 0,
     id: 3,
     round: 1,
     number: 4,
@@ -28,6 +32,7 @@ export default [
     teamName: `Erin & Emma`,
   },
   {
+    gameId: 0,
     id: 4,
     round: 1,
     number: 5,
@@ -35,6 +40,7 @@ export default [
     teamName: `Erin & Emma`,
   },
   {
+    gameId: 0,
     id: 5,
     round: 1,
     number: 6,
@@ -42,6 +48,7 @@ export default [
     teamName: `Erin & Emma`,
   },
   {
+    gameId: 0,
     id: 6,
     round: 1,
     number: 7,
@@ -49,6 +56,7 @@ export default [
     teamName: `Erin & Emma`,
   },
   {
+    gameId: 0,
     id: 7,
     round: 1,
     number: 8,
@@ -56,6 +64,7 @@ export default [
     teamName: `Erin & Emma`,
   },
   {
+    gameId: 0,
     id: 8,
     round: 1,
     number: 9,
@@ -63,6 +72,7 @@ export default [
     teamName: `Erin & Emma`,
   },
   {
+    gameId: 0,
     id: 9,
     round: 1,
     number: 10,

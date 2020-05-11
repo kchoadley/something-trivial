@@ -26,10 +26,11 @@ const NewQuestionForm: React.FC<Props> = (props) => {
   const defaultPrompt = "";
   const defaultRound = "1";
   const defaultNumber = "1";
-  const defaultAnswers = ["", ""];
+  const defaultAnswers = [""];
 
   // connect input values
   const [redirect, setRedirectValue] = useState<string>('');
+  const [gameId, setGameIdValue] = useState<string>(defaultPrompt);
   const [prompt, setPromptValue] = useState<string>(defaultPrompt);
   const [round, setRoundValue] = useState<string>(defaultRound);
   const [number, setNumberValue] = useState<string>(defaultNumber);
@@ -38,6 +39,10 @@ const NewQuestionForm: React.FC<Props> = (props) => {
   // handle changes
   const handleRoundChange = () => (e: React.ChangeEvent<HTMLInputElement>) => {
     setRoundValue(e.target.value);
+  };
+
+  const handleGameIdChange = () => (e: React.ChangeEvent<HTMLInputElement>) => {
+    setGameIdValue('0');
   };
 
   const handleNumberChange = () => (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,7 +76,7 @@ const NewQuestionForm: React.FC<Props> = (props) => {
     let parsedAnswers: string[] = [];
     answers.forEach(answer => { if (answer.trim().length > 0) parsedAnswers.push(answer.trim()) })
 
-    let question = { round: parseInt(round), number: parseInt(number), prompt: prompt, answerContains: parsedAnswers }
+    let question = { round: parseInt(round), number: parseInt(number), prompt: prompt, answerContains: parsedAnswers, gameId: parseInt(gameId) }
     createQuestion(question);
     resetFields();
     setRedirectValue(HOST_PAGE);
@@ -87,11 +92,19 @@ const NewQuestionForm: React.FC<Props> = (props) => {
   if (redirect.length > 0) {
     return <Redirect push to={redirect} />
   }
-  else {
 
-  }
   return (
     <Form onSubmit={Create()}>
+    <FormGroup row>
+      <Col sm={4} md={3} lg={2}>
+        <Label for="prompt">Game ID</Label>
+      </Col>
+      <Col sm={2} md={2} lg={2} >
+        { /* probably want to replace this with a dropdown. Dropdown options to include: gameIds the host owns currently, or "new" */ }
+        { /* for now, only 1 game ID exists */ }
+        <Input type="text" name="gameId" id="gameId" placeholder="0" value={gameId} onChange={handleGameIdChange()} required disabled/>
+      </Col>
+    </FormGroup>
       <FormGroup row>
         <Col sm={4} md={3} lg={2}>
           <Label for="round">Round Number</Label>
@@ -133,37 +146,21 @@ const NewQuestionForm: React.FC<Props> = (props) => {
           <Input type="textarea" name="prompt" id="prompt" placeholder="Question..." value={prompt} onChange={handlePromptChange()} required />
         </Col>
       </FormGroup>
-      <FormGroup row>
-        <Col sm={4} md={3} lg={2}>
-          <Label for="answer0">Answer Contains</Label>
-        </Col>
-        <Col sm={8} md={9} lg={10} >
-          <Input type="text" name="answer0" id="answer0" placeholder="Answer..." value={answers[0]} onChange={handleAnswersChange(0)} required />
-        </Col>
-      </FormGroup>
-      <FormGroup row>
-        <Col sm={4} md={3} lg={2}>
-          <Label for="answer1">Answer Contains</Label>
-        </Col>
-        <Col sm={8} md={9} lg={10} >
-          <Input type="text" name="answer0" id="answer1" placeholder="Answer..." value={answers[1]} onChange={handleAnswersChange(1)} />
-        </Col>
-      </FormGroup>
       {
-        (answers.length > 2) ? (
-            <FormGroup row>
+        answers.map((answer, index) => (
+            <FormGroup key={'answer' + index} row>
               <Col sm={4} md={3} lg={2}>
-                <Label for="answer1">Answer Contains</Label>
+                <Label for={"answer" + index}>Answer Contains</Label>
               </Col>
               <Col sm={8} md={9} lg={10} >
-                <Input type="text" name="answer2" id="answer2" placeholder="Answer..." value={answers[2]} onChange={handleAnswersChange(2)} />
+                <Input type="text" name={"answer" + index} id={"answer" + index} placeholder="Answer..." value={answer} onChange={handleAnswersChange(index)} required={(index===0)}/>
               </Col>
             </FormGroup>
-          ) : <React.Fragment />
+          ))
       }
-      <Button type='button' onClick={AddAnswerClick()}>(+) Answer</Button>
+      <Button type='button' onClick={AddAnswerClick()} style={{margin:"10px"}}>(+) Answer</Button>
       <br/>
-      <Button type="submit">Create</Button>
+      <Button type="submit" style={{margin:"10px"}}>Create</Button>
     </Form>
   );
 };
