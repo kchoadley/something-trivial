@@ -4,12 +4,15 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^4.3.1",
+    "csv": "^5.3.2",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.0-beta.5",
     "react-dom": "^16.13.1",
-    "react-router-dom": "^4.3.1",
-    "react-scripts": "^2.1.5",
-    "reactstrap": "^7.1.0"
+    "react-redux": "^7.2.0",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "^3.4.1",
+    "reactstrap": "^8.4.1",
+    "redux": "^4.0.5"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -25,5 +28,17 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "@types/react": "^16.9.34",
+    "@types/react-dom": "^16.9.7",
+    "@types/jest": "^25.2.1",
+    "@types/node": "^13.13.5",
+    "@types/react-redux": "^7.1.8",
+    "@types/react-router-dom": "^5.1.5",
+    "@types/reactstrap": "^8.4.2",
+    "source-map-loader": "^0.2.4",
+    "ts-loader": "^7.0.2",
+    "typescript": "^3.8.3"
+  }
 }

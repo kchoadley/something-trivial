@@ -7,6 +7,8 @@ This will be a webapp to help facilitate the hosting and grading of trivia onlin
 ## Technologies
 
 - React
+- Redux
+- Typescript
 
 ## Team
 
