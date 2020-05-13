@@ -13,7 +13,7 @@ interface INewQuestion {
 
 interface IAnswer extends INewAnswer{
   readonly id: number;
-  isCorrect?: boolean
+  isCorrect: boolean | undefined; // can be in one of 3 states: ungraded (undefined), graded as correct (true), or graded as incorrect (false). We will not differentiate between auto-grading and manual grading for now.
 }
 
 interface INewAnswer {

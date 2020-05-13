@@ -6,6 +6,7 @@ export default [
     number: 1,
     answer: `Draconus`,
     teamName: `Erin & Emma`,
+    isCorrect: undefined
   },
   {
     gameId: 0,
@@ -14,6 +15,7 @@ export default [
     number: 2,
     answer: `Dream pop`,
     teamName: `Erin & Emma`,
+    isCorrect: undefined
   },
   {
     gameId: 0,
@@ -22,6 +24,7 @@ export default [
     number: 3,
     answer: `Delano`,
     teamName: `Erin & Emma`,
+    isCorrect: undefined
   },
   {
     gameId: 0,
@@ -30,6 +33,7 @@ export default [
     number: 4,
     answer: `Idk bruh`,
     teamName: `Erin & Emma`,
+    isCorrect: undefined
   },
   {
     gameId: 0,
@@ -38,6 +42,7 @@ export default [
     number: 5,
     answer: `Dracula`,
     teamName: `Erin & Emma`,
+    isCorrect: undefined
   },
   {
     gameId: 0,
@@ -46,6 +51,7 @@ export default [
     number: 6,
     answer: `Daal`,
     teamName: `Erin & Emma`,
+    isCorrect: undefined
   },
   {
     gameId: 0,
@@ -54,6 +60,7 @@ export default [
     number: 7,
     answer: `Zooey deschanel`,
     teamName: `Erin & Emma`,
+    isCorrect: undefined
   },
   {
     gameId: 0,
@@ -62,6 +69,7 @@ export default [
     number: 8,
     answer: `Detroit river`,
     teamName: `Erin & Emma`,
+    isCorrect: undefined
   },
   {
     gameId: 0,
@@ -70,6 +78,7 @@ export default [
     number: 9,
     answer: `Dolly`,
     teamName: `Erin & Emma`,
+    isCorrect: undefined
   },
   {
     gameId: 0,
@@ -78,5 +87,6 @@ export default [
     number: 10,
     answer: `No idea`,
     teamName: `Erin & Emma`,
+    isCorrect: undefined
   },
 ]

@@ -28,8 +28,10 @@ export class Answer implements IAnswer{
     this.number = answer.number;
     this.answer = answer.answer;
     this.teamName = answer.teamName;
+    this.isCorrect = undefined;
   }
 
+  isCorrect: boolean | undefined;
   gameId: number;
   id: number;
   round: number;

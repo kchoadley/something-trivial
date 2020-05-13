@@ -1,8 +1,6 @@
 import { IState } from '../data/types';
-import questions from '../data/questions'
 import questionReducer from './questionReducer';
 import answerReducer from './anwerReducer';
-import answers from '../data/answers';
 
 type Action = {
   type: string,
@@ -10,8 +8,8 @@ type Action = {
 };
 
 const initialState: IState = {
-  questions: questions,
-  answers: answers
+  questions: [],
+  answers: []
 };
 
 const rootReducer = (state: IState = initialState, action: Action) => (
