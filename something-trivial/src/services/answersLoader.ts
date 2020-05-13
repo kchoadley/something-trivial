@@ -21,10 +21,10 @@ const answersLoader = (round: number, createAnswer: (answer: INewAnswer) => void
   // action to perform when csv data is written to parser and ready to read
   parser.on('readable', () => {
     let record: string[] = csvRowTrimRight(parser.read());
-    if (record === undefined) {
+    if (record === undefined || record.length < 2) {
+      console.error(`Invalid number of columns, must be at least 2 columns. [teamName, ...answers]`)
       return;
     }
-
     // process csv record into new answers and create in Redux store.
     let name = record[0];
     for (let i = 1; i < record.length; i++) {
@@ -52,8 +52,8 @@ const answersLoader = (round: number, createAnswer: (answer: INewAnswer) => void
 
     let content = e.target.result as string;
     let lines = content.split('\n');
-
     lines.forEach(line => parser.write(line));
+    parser.end();
   });
 
   fileReader.readAsText(file);
