@@ -8,12 +8,52 @@ interface INewQuestion {
   readonly number: number;
   readonly prompt: string;
   readonly answerContains: Array<string>;
+  readonly rules: IAnswerRuleNode;
   readonly points: number;
 }
 
-interface IAnswer extends INewAnswer{
+/**
+ * Defines interface for a Answer Rule Node.
+ * 
+ * Answer rules are defined by a tree of Answer Rule Nodes. By traversing the tree,
+ * you can determine if the submitted answer is correct or incorrect.
+ */
+interface IAnswerRuleNode {
+  satisfies: (answer: string) => boolean;
+  remainingAnswer: string;
+}
+
+/**
+ * Defines interface for a Answer Rule Node.
+ * 
+ * Answer rules are defined by a tree of Answer Rule Nodes. By traversing the tree,
+ * you can determine if the submitted answer is correct or incorrect.
+ */
+interface IOrchestratorNode extends IAnswerRuleNode {
+  left: IAnswerRuleNode,
+  right: IAnswerRuleNode
+}
+
+/**
+ * Defines interface for a Answer Rule Node.
+ * 
+ * Answer rules are defined by a tree of Answer Rule Nodes. By traversing the tree,
+ * you can determine if the submitted answer is correct or incorrect.
+ */
+interface IInvokerNode extends IAnswerRuleNode {
+  readonly parameter: any
+}
+
+/**
+ * isCorrect can be in one of 3 states:
+ *  - ungraded (undefined)
+ *  - graded as correct (true)
+ *  - graded as incorrect (false)
+ * We will not differentiate between auto-grading and manual grading for now.
+ */
+interface IAnswer extends INewAnswer {
   readonly id: number;
-  isCorrect: boolean | undefined; // can be in one of 3 states: ungraded (undefined), graded as correct (true), or graded as incorrect (false). We will not differentiate between auto-grading and manual grading for now.
+  isCorrect: boolean | undefined;
 }
 
 interface INewAnswer {
@@ -34,5 +74,8 @@ export type {
   INewQuestion,
   IAnswer,
   INewAnswer,
-  IState
+  IState,
+  IAnswerRuleNode,
+  IOrchestratorNode,
+  IInvokerNode
 }

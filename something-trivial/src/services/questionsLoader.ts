@@ -1,5 +1,6 @@
 import parse from 'csv-parse';
 import { INewQuestion } from '../redux/data/types';
+import { nodeBuilder } from './answerRules';
 
 /**
  * Creates answer objects from the CSV file and loads them into Redux store.
@@ -43,6 +44,7 @@ const questionsLoader = (createQuestion: (question: INewQuestion) => void) => (e
       number: parseInt(record[1]),
       prompt: record[2],
       answerContains: record[3].split(' '),
+      rules: nodeBuilder(record[3].split(' ')),
       points: (record.length > 4 && !isNaN(parseInt(record[4]))) ? parseInt(record[4]) : 1
     }
 

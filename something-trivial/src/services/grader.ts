@@ -7,6 +7,9 @@ import { IAnswer, IQuestion } from "../redux/data/types";
  * @param answerContains Answer should contain
  */
 export const grade = (answer: string, answerContains: string[]) => {
+  
+
+
   let isCorrect: boolean = true;
   let answers = answer.split(" ");
 

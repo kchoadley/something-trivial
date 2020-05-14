@@ -7,7 +7,7 @@ import { IQuestion, IState, IAnswer, INewAnswer } from '../redux/data/types';
 import { createAnswer, updateAnswer, removeAnswer } from '../redux/actions/answerActions';
 import AnswerRow from '../components/AnswerRow';
 import answersLoader from '../services/answersLoader';
-import { grade, tallyScore } from '../services/grader';
+import { tallyScore } from '../services/grader';
 import CopyToClipboard from 'react-copy-to-clipboard';
 
 type Props = {
@@ -42,8 +42,7 @@ const RoundPage: React.FC<Props> = (props) => {
     
     answers.forEach(answer => {
       let question = questions.filter(question => question.number === answer.number)[0];
-      let answerContains = question.answerContains;
-      answer.isCorrect = grade(answer.answer, answerContains)
+      answer.isCorrect = question.rules.satisfies(answer.answer)
       updateAnswer(answer);
     })
   }
@@ -75,7 +74,7 @@ const RoundPage: React.FC<Props> = (props) => {
   return (
     <React.Fragment>
       <CopyToClipboard text={scoresAsColumn()}><button>Copy to Clipboard</button></CopyToClipboard>
-      <Row float>
+      <Row>
         <Col></Col><Button color='primary' onClick={gradeAnswersHandler}>[✓] Grade Answers</Button><Col/>
         <Col></Col><Button color='danger' onClick={removeAnswersHandler}>[X] Clear Answers</Button><Col/>
       </Row>

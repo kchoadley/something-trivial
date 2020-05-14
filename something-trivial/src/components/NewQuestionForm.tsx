@@ -14,6 +14,7 @@ import { IState, INewQuestion } from '../redux/data/types';
 import { createQuestion } from '../redux/actions/questionActions';
 import { Redirect } from 'react-router-dom';
 import { HOST_PAGE } from './TrivialController';
+import { nodeBuilder } from '../services/answerRules';
 
 type Props = {
   createQuestion: (question: INewQuestion) => void;
@@ -36,7 +37,7 @@ const NewQuestionForm: React.FC<Props> = (props) => {
     setRoundValue(e.target.value);
   };
 
-  const handleGameIdChange = () => (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleGameIdChange = () => () => {
     setGameIdValue('0');
   };
 
@@ -67,12 +68,13 @@ const NewQuestionForm: React.FC<Props> = (props) => {
     let parsedAnswers: string[] = [];
     answers.forEach(answer => { if (answer.trim().length > 0) parsedAnswers.push(answer.trim()) })
 
-    let question = {
+    let question: INewQuestion = {
       gameId: parseInt(gameId),
       round: parseInt(round),
       number: parseInt(number),
       prompt: prompt,
       answerContains: parsedAnswers,
+      rules: nodeBuilder(parsedAnswers),
       points: points
     }
 
