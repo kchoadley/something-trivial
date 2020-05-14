@@ -31,7 +31,7 @@ class TrivialController extends Component {
           <Col style={{ textAlign: 'left' }}>
             <Switch>
               <Route
-                exact path={ROOT_PATH}
+                exact path={HOME_PAGE}
                 render={(props) => <HomePage {...props} />}
               />
               <Route
@@ -59,15 +59,22 @@ class TrivialController extends Component {
   }
 }
 
-const ROOT_PATH = '/';
-const HOST_PATH = ROOT_PATH + 'host/';
-const QUESTION_PATH = ROOT_PATH + 'questions/';
-const ROUND_PATH = ROOT_PATH + 'rounds/';
+const pathBuilder = (...pathVariables: string[]) => '/' + (pathVariables.join('/'))
 
-export const HOME_PAGE = ROOT_PATH;
-export const HOST_PAGE = HOST_PATH;
-export const VIEW_QUESTION_PAGE = (id: string) => `${QUESTION_PATH}${id}/`;
-export const NEW_QUESTION_PAGE = `${QUESTION_PATH}new/`;
-export const VIEW_ROUND_PAGE = (id: string) => `${ROUND_PATH}${id}/`;
+const HOST = 'host';
+const QUESTIONS = 'questions';
+const ROUNDS = 'rounds';
+const GAMES = 'games'
+const GAME_0 = '0';
+const NEW = 'new'
+
+export const HOME_PAGE = '/';
+// TODO: Actual host page needs to be designed and built. Should show information that the currently logged in host has access too, namely what games they own.
+// For now, just defaulting the Host button to redirect to the default game page, showing all the questions for the default game.
+export const HOST_PAGE = pathBuilder(HOST, GAMES, GAME_0);
+export const VIEW_QUESTION_PAGE = (id: string) => pathBuilder(HOST, QUESTIONS, id);
+export const NEW_QUESTION_PAGE = pathBuilder(HOST, QUESTIONS, NEW);
+export const VIEW_ROUND_PAGE = (id: string) => pathBuilder(HOST, GAMES, GAME_0, ROUNDS, id);
+
 
 export default TrivialController;

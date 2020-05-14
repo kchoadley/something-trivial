@@ -45,7 +45,7 @@ const remove = (answers: IAnswer[], id?: number): IAnswer[] => (
 const update = (answers: IAnswer[], answer?: IAnswer): IAnswer[] => (
   (answer === undefined) ?
     (answers) :
-    (add(remove(answers, answer.id), answer))
+    ([...remove(answers, answer.id), answer])
 );
 
 const fetch = (answers: IAnswer[], newAnswers?: IAnswer[]): IAnswer[] => (

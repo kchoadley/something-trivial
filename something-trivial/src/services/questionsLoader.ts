@@ -1,19 +1,19 @@
 import parse from 'csv-parse';
-import { INewAnswer } from '../redux/data/types';
+import { INewQuestion } from '../redux/data/types';
 
 /**
  * Creates answer objects from the CSV file and loads them into Redux store.
  * 
  * @param round What round is being loaded
- * @param createAnswer Redux action to create a new answer
+ * @param createQuestion Redux action to create a new answer
  */
-const answersLoader = (round: number, createAnswer: (answer: INewAnswer) => void) => (e: React.ChangeEvent<HTMLInputElement>) => {
+const questionsLoader = (createQuestion: (question: INewQuestion) => void) => (e: React.ChangeEvent<HTMLInputElement>) => {
   e.preventDefault();
   let files = e.target.files;
   if (files === null || files.length === 0) {
     return;
   }
-
+  
   let file = files[0]; // we only load 1 file
   let parser = parse();
   let fileReader = new FileReader();
@@ -21,23 +21,32 @@ const answersLoader = (round: number, createAnswer: (answer: INewAnswer) => void
   // action to perform when csv data is written to parser and ready to read
   parser.on('readable', () => {
     let record: string[] = csvRowTrimRight(parser.read());
-    if (record === undefined || record.length < 2) {
-      console.error(`Invalid number of columns, must be at least 2 columns. [teamName, ...answers]`)
+    if (record === undefined || record.length < 4) {
+      console.error(`Invalid number of columns, must be 4 columns. [round, number, prompt, answer]`)
       return;
     }
-    // process csv record into new answers and create in Redux store.
-    let name = record[0];
-    for (let i = 1; i < record.length; i++) {
-      let answer: INewAnswer = {
-        gameId: 0,
-        round: round,
-        number: i,
-        teamName: name,
-        answer: record[i]
-      }
 
-      createAnswer(answer);
+    if (isNaN(parseInt(record[0]))) {
+      console.error('Column 0 must be an integer');
+      return;
     }
+
+    if (isNaN(parseInt(record[1]))) {
+      console.error('Column 1 must be an integer');
+      return;
+    }
+
+    // process csv record into new question and create in Redux store.
+    let question: INewQuestion = {
+      gameId: 0,
+      round: parseInt(record[0]),
+      number: parseInt(record[1]),
+      prompt: record[2],
+      answerContains: record[3].split(' '),
+      points: (record.length > 4 && !isNaN(parseInt(record[4]))) ? parseInt(record[4]) : 1
+    }
+
+    createQuestion(question);
   });
 
   parser.on('error', function (err) {
@@ -77,4 +86,4 @@ const csvRowTrimRight = (csvRow: string[]): string[] => {
   return csvRow;
 }
 
-export default answersLoader;
+export default questionsLoader;
