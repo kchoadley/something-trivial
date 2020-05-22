@@ -30,11 +30,18 @@ const answerReducer = (answers: IAnswer[], action: Action): IAnswer[] => {
   }
 };
 
-const add = (answers: IAnswer[], newAnswer?: INewAnswer): IAnswer[] => (
-  (newAnswer === undefined) ?
-    (answers) :
-    ([...answers, new Answer(newAnswer, generateId(answers))])
-);
+const add = (answers: IAnswer[], newAnswer?: INewAnswer): IAnswer[] => {
+  if (newAnswer === undefined) {
+    return answers;
+  }
+
+  let id = findAnswer(answers, newAnswer);
+  if (id !== undefined) {
+    return update(answers, new Answer(newAnswer, id));
+  }
+
+  return [...answers, new Answer(newAnswer, generateId(answers))];
+};
 
 const remove = (answers: IAnswer[], id?: number): IAnswer[] => (
   (id === undefined) ?
@@ -60,5 +67,19 @@ const generateId = (answers: IAnswer[], index?: number): number => (
       generateId(remove(answers, answers[0].id),
         (index > answers[0].id) ? (index) : (answers[0].id + 1))))
 );
+
+const findAnswer = (answers: IAnswer[], answer: INewAnswer): number | undefined => {
+  let match = answers.filter(a =>
+    a.gameId === answer.gameId &&
+    a.round === answer.round &&
+    a.number === answer.number &&
+    a.teamName === answer.teamName);
+
+  if (match.length > 0) {
+    return match[0].id
+  }
+
+  return undefined;
+};
 
 export default answerReducer;
