@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Form, FormGroup, Label, Input, FormText, Row, Col, Button } from 'reactstrap';
+import { Table, Form, FormGroup, Label, Input, Row, Col, Button, ButtonToolbar, ButtonGroup, Container } from 'reactstrap';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import NotFoundPage from './NotFoundPage';
@@ -9,6 +9,7 @@ import AnswerRow from '../components/AnswerRow';
 import answersLoader from '../services/answersLoader';
 import { tallyScore } from '../services/grader';
 import CopyToClipboard from 'react-copy-to-clipboard';
+import './RoundPage.css'
 
 type Props = {
   questions: IQuestion[];
@@ -34,12 +35,12 @@ const RoundPage: React.FC<Props> = (props) => {
   const roundQuestions = questions.filter(question => question.round === round)
     .sort((a, b) => (a.number - b.number));
   const teamNames = [...(new Set(answers.map(answer => answer.teamName)))]
-    .sort();
+    .sort((a, b) => (a.toLowerCase().localeCompare(b.toLowerCase())));
   const loadAnswersFile = answersLoader(round, createAnswer);
 
   const gradeAnswersHandler = (e: React.MouseEvent) => {
     e.preventDefault();
-    
+
     answers.forEach(answer => {
       let question = questions.filter(question => question.number === answer.number)[0];
       answer.isCorrect = question.rules.satisfies(answer.answer)
@@ -49,71 +50,81 @@ const RoundPage: React.FC<Props> = (props) => {
 
   const removeAnswersHandler = (e: React.MouseEvent) => {
     e.preventDefault();
-    
+
     answers.forEach(answer => {
       removeAnswer(answer.id);
     })
   }
 
-  const scoresAsColumn = () => {
-    if (teamNames.length === 0) {
-      return '';
-    }
+  const scoresAsColumn = () => ((teamNames.length === 0) ? '' :
+    teamNames.map(teamName => (tallyScore(answers.filter(answer => answer.teamName === teamName), questions))).join('\n'));
 
-    let scores = teamNames.map(teamName => (tallyScore(answers.filter(answer => answer.teamName === teamName), questions)))
-
-    return scores.join('\n');
-  }
+  const namesAsColumn = () => ((teamNames.length === 0) ? '' :
+    teamNames.join('\n'));
 
   if (questions.length === 0) {
-    return (
-      <NotFoundPage />
-    )
+    return (<NotFoundPage />)
   }
 
   return (
     <React.Fragment>
-      <CopyToClipboard text={scoresAsColumn()}><button>Copy to Clipboard</button></CopyToClipboard>
-      <Row>
-        <Col></Col><Button color='primary' onClick={gradeAnswersHandler}>[✓] Grade Answers</Button><Col/>
-        <Col></Col><Button color='danger' onClick={removeAnswersHandler}>[X] Clear Answers</Button><Col/>
-      </Row>
-      <Table striped dark>
-        <thead color='red'>
-          <tr>
-            <th>Scores</th>
-            <th>Answers</th>
-            {
-              roundQuestions.map(question => (
-                <th key={question.id}> {question.answerContains.join(', ')} </th>
-              ))
-            }
-          </tr>
-        </thead>
-        <tbody>
-          {
-            teamNames.map(name => (
-              <AnswerRow key={name} answers={answers.filter(answer => answer.teamName === name)} questions={roundQuestions} />
-            ))
-          }
-        </tbody>
-      </Table >
-
-      <Form>
-        <FormGroup>
-          <Row>
-            <Col>
+      <Row style={{ width: '85vw', marginLeft: '7.5vw' }}>
+        <Col sm='9'>
+          <ButtonToolbar>
+            <ButtonGroup>
+              <Button color='primary' onClick={gradeAnswersHandler}>[✓] Grade Answers</Button>
+            </ButtonGroup>
+            <ButtonGroup>
+              <Button color='danger' onClick={removeAnswersHandler}>[X] Clear Answers</Button>
+            </ButtonGroup>
+            <ButtonGroup>
+              <CopyToClipboard text={scoresAsColumn()}>
+                <Button>Clipboard Scores</Button>
+              </CopyToClipboard>
+            </ButtonGroup>
+            <ButtonGroup>
+              <CopyToClipboard text={namesAsColumn()}>
+                <Button>Clipboard Names</Button>
+              </CopyToClipboard>
+            </ButtonGroup>
+          </ButtonToolbar>
+        </Col>
+        <Col sm='3'>
+          <Form>
+            <FormGroup>
               <Label for="csvAnswersFile">CSV Answers File Loader</Label>
-              <FormText color="muted">
-                Select a CSV file of answers for this round to be loaded.
-              </FormText>
-            </Col>
-            <Col>
-              <Input type="file" name="csvAnswersFile" id="csvAnswersFile" accept='.csv' onChange={loadAnswersFile} />
-            </Col>
-          </Row>
-        </FormGroup>
-      </Form>
+              <Input type="file" onfocus="this.value=''" name="csvAnswersFile" id="csvAnswersFile" accept='.csv' onChange={loadAnswersFile} />
+            </FormGroup>
+          </Form>
+        </Col>
+      </Row>
+
+      {/* <Table striped dark className='roundTable' style={{width: 'auto'}}  style={{width: '65vw', maxWidth: '95vw'}}> */}
+      <div className='roundTableContainer'>
+        <Table striped dark className='roundTable'>
+          <thead color='red' className='roundTableHeader'>
+            <tr>
+              <th className='roundScoreColumn'>Score</th>
+              <th className='roundTeamColumn'>Team</th>
+              {
+                roundQuestions.map(question => (
+                  <th className='roundAnswerColumn' key={question.id}> {question.answerContains.join(', ')} </th>
+                ))
+              }
+            </tr>
+          </thead>
+          <div className='roundTableBodyWrapper'>
+            <tbody className='roundTableBody'>
+              {
+                teamNames.map(name => (
+                  <AnswerRow key={name} answers={answers.filter(answer => answer.teamName === name)} questions={roundQuestions} />
+                ))
+              }
+            </tbody>
+          </div>
+        </Table>
+      </div>
+
     </React.Fragment>
   );
 };

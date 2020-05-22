@@ -3,6 +3,7 @@ import { IQuestion, IAnswer } from '../redux/data/types'
 import { updateAnswer } from '../redux/actions/answerActions';
 import { connect } from 'react-redux';
 import { tallyScore } from '../services/grader';
+import '../pages/RoundPage.css'
 
 interface Props {
   answers: IAnswer[];
@@ -41,14 +42,14 @@ const AnswerRow: React.FC<Props> = (props: Props) => {
 
   return (
     <tr key={name}>
-      <td style={{ fontWeight: "bold" }} >{tallyScore(answers, questions)}</td>
-      <td style={{ fontWeight: "bold" }} >{name}</td>
+      <td className='roundScoreColumn'>{tallyScore(answers, questions)}</td>
+      <td className='roundTeamColumn'>{name}</td>
       {
         questions.map(question => {
           let answer = answers.filter(answer => answer.number === question.number)[0];
           return (answer === undefined) ?
-            <td key={question.id}>-</td> :
-            (<td key={answer.id} style={answerStyle(answer.isCorrect)} onClick={overrideIsCorrectHandler(answer)}> {answer.answer} </td>);
+            <td className='roundAnswerColumn' key={question.id}>-</td> :
+            (<td className='roundAnswerColumn' key={answer.id} style={answerStyle(answer.isCorrect)} onClick={overrideIsCorrectHandler(answer)}> {answer.answer} </td>);
         })
       }
     </tr>
