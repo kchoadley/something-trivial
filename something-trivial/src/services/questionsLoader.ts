@@ -45,7 +45,7 @@ const questionsLoader = (createQuestion: (question: INewQuestion) => void) => (e
       prompt: record[2],
       answerContains: record[3].split(' '),
       rules: nodeBuilder(record[3].split(' ')),
-      points: (record.length > 4 && !isNaN(parseInt(record[4]))) ? parseInt(record[4]) : 1
+      points: (record.length > 4 && !isNaN(parseFloat(record[4]))) ? parseFloat(record[4]) : 1
     }
 
     createQuestion(question);
@@ -68,6 +68,9 @@ const questionsLoader = (createQuestion: (question: INewQuestion) => void) => (e
   });
 
   fileReader.readAsText(file);
+
+  // reset value so you can load the same file again.
+  e.target.value = '';
 };
 
 /**
