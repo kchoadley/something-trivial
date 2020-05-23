@@ -9,6 +9,7 @@ import {
   NavLink
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { HOME_PAGE, HOST_PAGE } from './TrivialController';
 
 class TrivialNavBar extends React.Component {
   constructor(props) {
@@ -28,12 +29,12 @@ class TrivialNavBar extends React.Component {
     return (
       <div>
         <Navbar color="dark" dark expand="md">
-          <NavbarBrand tag={Link} to="/">Something Trivial</NavbarBrand>
+          <NavbarBrand tag={Link} to={HOME_PAGE}>Something Trivial</NavbarBrand>
           <NavbarToggler onClick={this.toggle} className="mr-2"/>
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="mr-auto" navbar>
               <NavItem>
-                <NavLink tag={Link} to="/host">Host</NavLink>
+                <NavLink tag={Link} to={HOST_PAGE}>Host</NavLink>
               </NavItem>
             </Nav>
           </Collapse>

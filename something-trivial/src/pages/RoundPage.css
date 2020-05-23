@@ -1,0 +1,44 @@
+.roundTeamNumberColumn {
+    min-width: 25px;
+    max-width: 25px;
+}
+
+.roundScoreColumn {
+    min-width: 65px;
+    max-width: 65px;
+}
+
+.roundTeamColumn {
+    min-width: 125px;
+    max-width: 125px;
+}
+
+.roundAnswerColumn {
+    min-width: 125px;
+    max-width: 125px;
+}
+
+.roundTable {
+    display: block;
+    width: fit-content;
+    overflow-x: scroll;
+}
+
+.roundTableContainer {
+    display: block;
+    overflow-x: auto;
+    max-width: 95vw;
+}
+
+.roundTableBody {
+    max-height: 70vh;
+    display: block;
+    overflow: visible;
+    display: display-outside;
+    resize: vertical;
+}
+
+.roundTableBodyWrapper {
+    overflow-y: auto;
+    width: 2710px
+}
