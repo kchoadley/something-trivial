@@ -1,6 +1,12 @@
-import { IQuestion, INewQuestion, IAnswer, INewAnswer } from "./types";
+import { 
+  IQuestion,
+  INewQuestion,
+  IAnswer,
+  INewAnswer,
+  IAnswerRuleNode
+} from "./types";
 
-export class Question implements IQuestion{
+export class Question implements IQuestion {
   constructor(question: INewQuestion, id: number) {
     this.gameId = question.gameId;
     this.round = question.round;
@@ -8,6 +14,7 @@ export class Question implements IQuestion{
     this.prompt = question.prompt;
     this.answerContains = question.answerContains;
     this.points = question.points;
+    this.rules = question.rules;
     this.id = id;
   }
 
@@ -17,10 +24,11 @@ export class Question implements IQuestion{
   number: number;
   prompt: string;
   points: number;
+  rules: IAnswerRuleNode;
   answerContains: string[];
 }
 
-export class Answer implements IAnswer{
+export class Answer implements IAnswer {
   constructor(answer: INewAnswer, id: number) {
     this.gameId = answer.gameId;
     this.id = id;

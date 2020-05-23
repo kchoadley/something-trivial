@@ -30,11 +30,18 @@ const questionReducer = (questions: IQuestion[], action: Action): IQuestion[] =>
   }
 };
 
-const add = (questions: IQuestion[], newQuestion?: INewQuestion): IQuestion[] => (
-  (newQuestion === undefined) ?
-    (questions) :
-    ([...questions, new Question(newQuestion, generateId(questions))])
-);
+const add = (questions: IQuestion[], newQuestion?: INewQuestion): IQuestion[] => {
+  if (newQuestion === undefined) {
+    return questions;
+  }
+
+  let id = findQuestion(questions, newQuestion);
+  if (id !== undefined) {
+    return update(questions, new Question(newQuestion, id));
+  }
+
+  return [...questions, new Question(newQuestion, generateId(questions))];
+};
 
 const remove = (questions: IQuestion[], id?: number): IQuestion[] => (
   (id === undefined) ?
@@ -60,5 +67,18 @@ const generateId = (questions: IQuestion[], index?: number): number => (
       generateId(remove(questions, questions[0].id),
         (index > questions[0].id) ? (index) : (questions[0].id + 1))))
 );
+
+const findQuestion = (questions: IQuestion[], question: INewQuestion): number | undefined => {
+  let match = questions.filter(q =>
+    q.gameId === question.gameId &&
+    q.round === question.round &&
+    q.number === question.number);
+
+  if (match.length > 0) {
+    return match[0].id
+  }
+
+  return undefined;
+};
 
 export default questionReducer;

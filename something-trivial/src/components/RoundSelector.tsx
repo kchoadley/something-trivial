@@ -13,18 +13,21 @@ const RoundSelector: React.FC<Props> = (props) => {
   const rounds = props.rounds;
 
   return (
-    <Row>
-      {
-        rounds.map(round => (
-          <Col sm='auto' key={round}>
-            <Link to={VIEW_ROUND_PAGE(round.toString())}>
-              <Button>
-                Round {round}
-              </Button>
-            </Link>
-          </Col>))
-      }
-    </Row>
+    <React.Fragment>
+      <Row>
+        {
+          rounds.map(round => (
+            <Col sm='auto' key={round} style={{ paddingBottom: '25px' }}>
+              <Link to={VIEW_ROUND_PAGE(round.toString())}>
+                <Button>
+                  Round {round}
+                </Button>
+              </Link>
+            </Col>))
+        }
+      </Row>
+      <br />
+    </React.Fragment>
   );
 };
 

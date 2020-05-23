@@ -9,6 +9,7 @@ import { INewAnswer } from '../redux/data/types';
  */
 const answersLoader = (round: number, createAnswer: (answer: INewAnswer) => void) => (e: React.ChangeEvent<HTMLInputElement>) => {
   e.preventDefault();
+
   let files = e.target.files;
   if (files === null || files.length === 0) {
     return;
@@ -57,6 +58,9 @@ const answersLoader = (round: number, createAnswer: (answer: INewAnswer) => void
   });
 
   fileReader.readAsText(file);
+  
+  // reset file input so you can load the same file again if you clear them
+  e.target.value = '';
 };
 
 /**
