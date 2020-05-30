@@ -2,7 +2,7 @@ import React from 'react'
 import { INewQuestion } from '../redux/data/types'
 import { createQuestion } from '../redux/actions/questionActions';
 import { connect } from 'react-redux';
-import { Form, FormGroup, Row, Col, Label, FormText, Input, ButtonToolbar, ButtonGroup, Button } from 'reactstrap';
+import { Form, FormGroup, Row, Col, Label, Input, ButtonToolbar, ButtonGroup, Button } from 'reactstrap';
 import questionsLoader from '../services/questionsLoader';
 import { Link } from 'react-router-dom';
 import { NEW_QUESTION_PAGE } from './TrivialController';
